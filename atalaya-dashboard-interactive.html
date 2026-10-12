@@ -353,9 +353,12 @@
         </div>
       </div>
 
-      <button class="module-button" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="openCommand()">
-        Abrir comando → /moduleName
+      <button id="commandBtn" class="module-button" style="margin-top: 20px; width: 100%; justify-content: center; background: linear-gradient(135deg, rgba(6,182,212,0.3), rgba(59,130,246,0.3)); border-color: #06b6d4; color: #06b6d4; font-weight: 600;" onclick="executeCommand()">
+        📋 Copiar comando
       </button>
+      <div id="copyNotification" style="margin-top: 12px; padding: 8px; background: rgba(22,163,74,0.2); border: 1px solid #16a34a; border-radius: 6px; color: #16a34a; font-size: 12px; text-align: center; display: none;">
+        ✅ Comando copiado al portapapeles
+      </div>
     </div>
   </div>
 
@@ -510,11 +513,44 @@
       document.getElementById('modal').classList.remove('active')
     }
 
-    function openCommand() {
+    function executeCommand() {
       const cmd = modules[selectedModule].command
-      if (cmd.includes('/')) {
-        alert(`Ejecuta en Claude Code:\n\n${cmd}`)
-      }
+
+      // Copiar al portapapeles
+      navigator.clipboard.writeText(cmd).then(() => {
+        // Show success notification
+        const notification = document.getElementById('copyNotification')
+        notification.style.display = 'block'
+
+        // Auto-hide after 2 seconds
+        setTimeout(() => {
+          notification.style.display = 'none'
+        }, 2000)
+
+        // Update button text
+        const btn = document.getElementById('commandBtn')
+        const originalText = btn.innerHTML
+        btn.innerHTML = '✅ Copiado!'
+        btn.style.background = 'linear-gradient(135deg, rgba(22,163,74,0.3), rgba(34,197,94,0.3))'
+        btn.style.borderColor = '#16a34a'
+        btn.style.color = '#16a34a'
+
+        setTimeout(() => {
+          btn.innerHTML = originalText
+          btn.style.background = 'linear-gradient(135deg, rgba(6,182,212,0.3), rgba(59,130,246,0.3))'
+          btn.style.borderColor = '#06b6d4'
+          btn.style.color = '#06b6d4'
+        }, 2000)
+      }).catch(err => {
+        // Fallback for browsers that don't support clipboard API
+        const textArea = document.createElement('textarea')
+        textArea.value = cmd
+        document.body.appendChild(textArea)
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+        alert(`✅ Comando copiado:\n\n${cmd}\n\nPégalo en Claude Code`)
+      })
     }
 
     function simulateUpdate() {
