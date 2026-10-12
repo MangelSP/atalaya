@@ -38,13 +38,16 @@ export const register: Register = on => {
 
     const { Box, Text } = $.ui.resolve(e)
     return (
-      <Box>
-        <Text color="yellow">◆ </Text>
-        <Text dimColor>
-          Esto pinta simple — podrias bajar a{' '}
+      <Box flexDirection="column">
+        <Text bold color="magenta">🧠 Model Advisor</Text>
+        <Text dimColor>Este prompt pinta simple, saca máximo provecho</Text>
+        <Text></Text>
+        <Text>
+          <Text color="green">✓</Text>
+          <Text dimColor> Cambia a </Text>
+          <Text bold color="cyan">/model {t.cheapModel}</Text>
+          <Text dimColor> para ahorrar límite (5h/semana)</Text>
         </Text>
-        <Text bold>/model {t.cheapModel}</Text>
-        <Text dimColor> para ahorrar limite.</Text>
       </Box>
     )
   })

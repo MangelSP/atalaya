@@ -22,7 +22,7 @@ export const register: Register = on => {
       projectPath: e.cwd,
       hasFile: false, // Por ahora, espera a que el usuario corra /graphify
     }))
-    void $.ui.open({ id: PANE, title: 'Grafo del proyecto' })
+    void $.ui.open({ id: PANE, title: '📈 Grafo del proyecto' })
     return next(e)
   })
 
@@ -38,18 +38,16 @@ export const register: Register = on => {
     if (!s.hasFile || !s.graph) {
       return (
         <Box flexDirection="column">
-          <Text>Grafo del proyecto</Text>
-          <Text dimColor>{s.projectPath}</Text>
-          <Text dimColor></Text>
-          <Text dimColor>
-            Sin grafo. Corre <Text bold>/graphify</Text> en tu sesión para
-            generarlo.
-          </Text>
-          <Text dimColor></Text>
-          <Text dimColor>
-            Una vez generado, verás aquí el grafo: nodos (conceptos, archivos,
-            componentes) y sus conexiones.
-          </Text>
+          <Text bold color="blue">📈 Grafo del proyecto</Text>
+          <Text dimColor>Mapeo visual de componentes y conexiones</Text>
+          <Text></Text>
+          <Text dimColor>Sin grafo generado aún.</Text>
+          <Text></Text>
+          <Text dimColor>Corre:</Text>
+          <Text bold color="cyan">  /graphify</Text>
+          <Text></Text>
+          <Text dimColor>para generar el grafo con nodos (conceptos,</Text>
+          <Text dimColor>archivos, componentes) y sus conexiones.</Text>
         </Box>
       )
     }
@@ -65,10 +63,9 @@ export const register: Register = on => {
 
     return (
       <Box flexDirection="column">
-        <Text bold>
-          {nodes.length} nodos
-          <Text dimColor> · {s.graph.edges?.length || 0} conexiones</Text>
-        </Text>
+        <Text bold color="blue">📈 {nodes.length} nodos</Text>
+        <Text dimColor>{s.graph.edges?.length || 0} conexiones</Text>
+        <Text></Text>
         {nodes.slice(0, room).map(n => (
           <Text key={n.id} dimColor={n.file_type === 'document'}>
             <Text
@@ -79,11 +76,11 @@ export const register: Register = on => {
               ●
             </Text>{' '}
             <Text bold>{n.label}</Text>
-            <Text dimColor> [{n.file_type}]</Text>
+            <Text dimColor> {n.file_type}</Text>
           </Text>
         ))}
         {nodes.length > room && (
-          <Text dimColor>+{nodes.length - room} más...</Text>
+          <Text dimColor>+{nodes.length - room} más…</Text>
         )}
       </Box>
     )
