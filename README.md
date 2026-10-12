@@ -6,13 +6,23 @@ Una colección de 6 mods integrados para monitorear tu uso de tokens, ver qué h
 
 ---
 
-## 📊 Diagrama Visual
+## 📊 Visualizaciones Interactivas
 
-Abre **`atalaya-visual-diagram.html`** en tu navegador para ver una visualización interactiva del sistema:
+### 🎯 Dashboard Interactivo (recomendado)
+Abre **`atalaya-dashboard-interactive.html`** para el dashboard completo:
+- **Click en módulos** para ver detalles, estado y comandos
+- **Status bar en vivo** con datos simulados
+- **Modal popups** con información detallada
+- **Animaciones suaves** y transiciones
+- **Panel de control** con acciones rápidas
+- **Responsive design** optimizado para móvil y desktop
+
+### 📈 Diagrama Visual Estático
+Abre **`atalaya-visual-diagram.html`** para una visualización limpia:
 - 6 módulos coloreados conectados a un hub central
-- Indicadores en vivo mostrando estado
-- Barras de progreso de uso
-- Flujo de datos visual
+- Indicadores visuales de estado
+- Barras de progreso
+- Leyenda y explicaciones
 
 ---
 
