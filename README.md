@@ -6,6 +6,16 @@ Una colección de 6 mods integrados para monitorear tu uso de tokens, ver qué h
 
 ---
 
+## 📊 Diagrama Visual
+
+Abre **`atalaya-visual-diagram.html`** en tu navegador para ver una visualización interactiva del sistema:
+- 6 módulos coloreados conectados a un hub central
+- Indicadores en vivo mostrando estado
+- Barras de progreso de uso
+- Flujo de datos visual
+
+---
+
 ## 🎯 Mods Disponibles
 
 ### 💰 token-budget
