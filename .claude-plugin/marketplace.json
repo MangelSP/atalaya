@@ -6,6 +6,11 @@
   },
   "plugins": [
     {
+      "name": "atalaya-dashboard",
+      "source": "./atalaya-dashboard",
+      "description": "Dashboard central: resumen de tokens, agentes, grafo. /atalaya"
+    },
+    {
       "name": "token-budget",
       "source": "./token-budget",
       "description": "Barra + status line con el % usado de tus ventanas (5h, semana, premium) y el reset."
