@@ -1,0 +1,6 @@
+{
+  "name": "graphify-panel",
+  "version": "0.1.0",
+  "description": "Panel vivo: grafo del proyecto actual. Si no existe, genera con /graphify.",
+  "types": "./types/index.d.ts"
+}

@@ -24,6 +24,11 @@
       "name": "plan-build",
       "source": "./plan-build",
       "description": "Un subagente planifica y otro construye con ese plan. /plan-build <tarea>"
+    },
+    {
+      "name": "graphify-panel",
+      "source": "./graphify-panel",
+      "description": "Panel en vivo del grafo del proyecto. Corre /graphify para generarlo. /graphify-panel"
     }
   ]
 }
