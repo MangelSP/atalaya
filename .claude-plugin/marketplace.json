@@ -1,0 +1,29 @@
+{
+  "name": "atalaya",
+  "owner": { "name": "usuario" },
+  "metadata": {
+    "description": "Atalaya: vigila tus limites de tokens y tus agentes en Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "token-budget",
+      "source": "./token-budget",
+      "description": "Barra + status line con el % usado de tus ventanas (5h, semana, premium) y el reset."
+    },
+    {
+      "name": "agent-panel",
+      "source": "./agent-panel",
+      "description": "Pane en vivo: que tools y subagentes corren, cuales activos y bajo que agente. /agent-panel"
+    },
+    {
+      "name": "model-advisor",
+      "source": "./model-advisor",
+      "description": "Sugiere /model haiku cuando el prompt pinta simple. No cambia el modelo solo."
+    },
+    {
+      "name": "plan-build",
+      "source": "./plan-build",
+      "description": "Un subagente planifica y otro construye con ese plan. /plan-build <tarea>"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "model-advisor",
+  "version": "0.1.0",
+  "description": "Sugiere bajar a un modelo barato cuando el prompt pinta simple. No cambia el modelo solo.",
+  "types": "./types/index.d.ts"
+}

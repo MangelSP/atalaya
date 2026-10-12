@@ -1,0 +1,5 @@
+{
+  "name": "plan-build",
+  "version": "0.1.0",
+  "description": "/plan-build <tarea>: un subagente planifica y otro construye con ese plan (Claude habla con Claude)."
+}

@@ -1,0 +1,6 @@
+{
+  "name": "agent-panel",
+  "version": "0.1.0",
+  "description": "Pane en vivo: que tools y subagentes corren, cuales siguen activos, y bajo que agente.",
+  "types": "./types/index.d.ts"
+}
