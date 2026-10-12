@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atalaya - Sistema de Monitoreo Interactivo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 50px; color: white; }
+    h1 { font-size: 42px; margin-bottom: 10px; background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 16px; color: #94a3b8; }
+
+    .diagram { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+
+    svg { display: block; margin: 0 auto; }
+
+    .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 40px; }
+    .legend-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px; border-radius: 8px; background: #f8fafc;
+    }
+    .legend-item svg { width: 24px; height: 24px; flex-shrink: 0; }
+    .legend-content { }
+    .legend-title { font-weight: 600; font-size: 14px; color: #1e293b; }
+    .legend-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+    .info-box {
+      margin-top: 40px; padding: 20px; border-radius: 12px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f0f4ff 100%);
+      border-left: 4px solid #06b6d4;
+    }
+    .info-box h3 { color: #0369a1; margin-bottom: 8px; font-size: 14px; }
+    .info-box p { color: #475569; font-size: 13px; line-height: 1.6; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .module { animation: float 3s ease-in-out infinite; }
+      .module:nth-child(2) { animation-delay: 0.2s; }
+      .module:nth-child(3) { animation-delay: 0.4s; }
+      .module:nth-child(4) { animation-delay: 0.6s; }
+      .module:nth-child(5) { animation-delay: 0.8s; }
+      .module:nth-child(6) { animation-delay: 1s; }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+      }
+    }
+
+    .stat { color: #64748b; font-size: 12px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚔️ Atalaya</h1>
+      <p class="subtitle">Sistema de Monitoreo Integrado para Claude Code</p>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background grid subtle -->
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="1200" height="700" fill="url(#grid)" opacity="0.3"/>
+
+        <!-- Central Hub -->
+        <circle cx="600" cy="350" r="80" fill="#1e293b" stroke="#06b6d4" stroke-width="3"/>
+        <circle cx="600" cy="350" r="70" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.5"/>
+        <text x="600" y="345" text-anchor="middle" font-size="48" fill="#06b6d4">⚔️</text>
+        <text x="600" y="380" text-anchor="middle" font-size="12" fill="#64748b" font-weight="600">CENTRO</text>
+
+        <!-- Connection Lines to Modules -->
+        <line x1="600" y1="350" x2="200" y2="150" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+        <line x1="600" y1="350" x2="600" y2="130" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+        <line x1="600" y1="350" x2="1000" y2="150" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+        <line x1="600" y1="350" x2="200" y2="550" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+        <line x1="600" y1="350" x2="600" y2="570" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+        <line x1="600" y1="350" x2="1000" y2="550" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+
+        <!-- TOP ROW: 3 Modules -->
+        <!-- 1. token-budget (Cyan) -->
+        <g class="module">
+          <rect x="120" y="80" width="160" height="140" rx="12" fill="#ecf0ff" stroke="#06b6d4" stroke-width="2"/>
+          <rect x="130" y="90" width="140" height="30" rx="6" fill="#06b6d4" opacity="0.1"/>
+          <text x="200" y="112" text-anchor="middle" font-size="32">💰</text>
+          <text x="200" y="140" text-anchor="middle" font-size="13" font-weight="600" fill="#0369a1">token-budget</text>
+          <rect x="135" y="155" width="130" height="4" rx="2" fill="#e0e7ff"/>
+          <rect x="135" y="155" width="78" height="4" rx="2" fill="#06b6d4"/>
+          <text x="200" y="175" text-anchor="middle" font-size="11" fill="#64748b">60% semanal</text>
+        </g>
+
+        <!-- 2. agent-panel (Green) -->
+        <g class="module">
+          <rect x="520" y="40" width="160" height="140" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+          <rect x="530" y="50" width="140" height="30" rx="6" fill="#16a34a" opacity="0.1"/>
+          <text x="600" y="72" text-anchor="middle" font-size="32">👥</text>
+          <text x="600" y="100" text-anchor="middle" font-size="13" font-weight="600" fill="#15803d">agent-panel</text>
+          <circle cx="555" cy="125" r="4" fill="#16a34a"/>
+          <circle cx="575" cy="125" r="4" fill="#16a34a"/>
+          <circle cx="595" cy="125" r="4" fill="#16a34a"/>
+          <circle cx="615" cy="125" r="4" fill="#16a34a"/>
+          <text x="600" y="145" text-anchor="middle" font-size="11" fill="#64748b">4 activos</text>
+        </g>
+
+        <!-- 3. model-advisor (Magenta) -->
+        <g class="module">
+          <rect x="920" y="80" width="160" height="140" rx="12" fill="#fef2f8" stroke="#d946ef" stroke-width="2"/>
+          <rect x="930" y="90" width="140" height="30" rx="6" fill="#d946ef" opacity="0.1"/>
+          <text x="1000" y="112" text-anchor="middle" font-size="32">🧠</text>
+          <text x="1000" y="140" text-anchor="middle" font-size="13" font-weight="600" fill="#be123c">model-advisor</text>
+          <rect x="935" y="155" width="130" height="4" rx="2" fill="#f5d4e6"/>
+          <rect x="935" y="155" width="65" height="4" rx="2" fill="#d946ef"/>
+          <text x="1000" y="175" text-anchor="middle" font-size="11" fill="#64748b">Haiku sugerido</text>
+        </g>
+
+        <!-- BOTTOM ROW: 3 Modules -->
+        <!-- 4. plan-build (Blue) -->
+        <g class="module">
+          <rect x="120" y="480" width="160" height="140" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <rect x="130" y="490" width="140" height="30" rx="6" fill="#2563eb" opacity="0.1"/>
+          <text x="200" y="512" text-anchor="middle" font-size="32">🔨</text>
+          <text x="200" y="540" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">plan-build</text>
+          <text x="200" y="560" text-anchor="middle" font-size="10" fill="#2563eb" font-weight="600">📋 → 🔨</text>
+          <text x="200" y="575" text-anchor="middle" font-size="11" fill="#64748b">Construyendo</text>
+        </g>
+
+        <!-- 5. graphify-panel (Purple) -->
+        <g class="module">
+          <rect x="520" y="520" width="160" height="140" rx="12" fill="#faf5ff" stroke="#9333ea" stroke-width="2"/>
+          <rect x="530" y="530" width="140" height="30" rx="6" fill="#9333ea" opacity="0.1"/>
+          <text x="600" y="552" text-anchor="middle" font-size="32">📈</text>
+          <text x="600" y="580" text-anchor="middle" font-size="13" font-weight="600" fill="#6b21a8">graphify-panel</text>
+          <circle cx="575" cy="620" r="3" fill="#9333ea"/>
+          <circle cx="600" cy="610" r="3" fill="#9333ea"/>
+          <circle cx="625" cy="620" r="3" fill="#9333ea"/>
+          <line x1="575" y1="620" x2="600" y2="610" stroke="#9333ea" stroke-width="1.5" opacity="0.6"/>
+          <line x1="600" y1="610" x2="625" y2="620" stroke="#9333ea" stroke-width="1.5" opacity="0.6"/>
+        </g>
+
+        <!-- 6. atalaya-dashboard (Orange) -->
+        <g class="module">
+          <rect x="920" y="480" width="160" height="140" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+          <rect x="930" y="490" width="140" height="30" rx="6" fill="#ea580c" opacity="0.1"/>
+          <text x="1000" y="512" text-anchor="middle" font-size="32">⚔️</text>
+          <text x="1000" y="540" text-anchor="middle" font-size="13" font-weight="600" fill="#b45309">dashboard</text>
+          <rect x="935" y="560" width="130" height="2" rx="1" fill="#fed7aa"/>
+          <rect x="935" y="565" width="130" height="2" rx="1" fill="#fed7aa"/>
+          <rect x="935" y="570" width="130" height="2" rx="1" fill="#fed7aa"/>
+          <text x="1000" y="590" text-anchor="middle" font-size="11" fill="#64748b">Todos los mods</text>
+        </g>
+
+        <!-- Status Indicator (pulsing circle on top center) -->
+        <g opacity="0.8">
+          <circle cx="600" cy="30" r="8" fill="#16a34a" opacity="0.3"/>
+          <circle cx="600" cy="30" r="5" fill="#16a34a"/>
+        </g>
+        <text x="630" y="35" font-size="12" fill="#64748b">Sistema activo</text>
+      </svg>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item">
+          <div style="width: 24px; height: 24px; background: #06b6d4; border-radius: 4px;"></div>
+          <div class="legend-content">
+            <div class="legend-title">💰 token-budget</div>
+            <div class="legend-desc">Monitoreo de límites (5h, semana, premium)</div>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <div style="width: 24px; height: 24px; background: #16a34a; border-radius: 4px;"></div>
+          <div class="legend-content">
+            <div class="legend-title">👥 agent-panel</div>
+            <div class="legend-desc">Tools y subagentes en vivo</div>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <div style="width: 24px; height: 24px; background: #d946ef; border-radius: 4px;"></div>
+          <div class="legend-content">
+            <div class="legend-title">🧠 model-advisor</div>
+            <div class="legend-desc">Optimización automática de modelo</div>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <div style="width: 24px; height: 24px; background: #2563eb; border-radius: 4px;"></div>
+          <div class="legend-content">
+            <div class="legend-title">🔨 plan-build</div>
+            <div class="legend-desc">Orquestación: Planifica → Construye</div>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <div style="width: 24px; height: 24px; background: #9333ea; border-radius: 4px;"></div>
+          <div class="legend-content">
+            <div class="legend-title">📈 graphify-panel</div>
+            <div class="legend-desc">Visualización del grafo del proyecto</div>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <div style="width: 24px; height: 24px; background: #ea580c; border-radius: 4px;"></div>
+          <div class="legend-content">
+            <div class="legend-title">⚔️ atalaya-dashboard</div>
+            <div class="legend-desc">Hub central de todos los mods</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="info-box">
+        <h3>🎯 Cómo funciona</h3>
+        <p>
+          <strong>Centro:</strong> El sistema central orquesta todos los mods y coordina la recopilación de datos.<br>
+          <strong>Módulos conectados:</strong> Cada mod (representado por un cuadro coloreado) se comunica con el centro a través de líneas de datos punteadas.<br>
+          <strong>Indicadores:</strong> Las barras de progreso y círculos muestran el estado en tiempo real de cada componente.<br>
+          <strong>Flujo de datos:</strong> Los datos de tokens, agentes y grafo fluyen constantemente hacia el dashboard central.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
