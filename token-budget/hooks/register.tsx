@@ -14,6 +14,13 @@ const LABEL: Record<string, string> = {
 }
 const label = (kind: string) => LABEL[kind] ?? kind
 
+const emoji = (kind: string) => {
+  if (kind.includes('five')) return '⏰'
+  if (kind.includes('seven')) return '📅'
+  if (kind.includes('spend')) return '💳'
+  return '📊'
+}
+
 // percentUsed (0-100) -> "█████░░░░░"
 const bar = (pct: number) => {
   const filled = Math.max(0, Math.min(10, Math.round(pct / 10)))
@@ -21,6 +28,12 @@ const bar = (pct: number) => {
 }
 
 const color = (pct: number) => (pct >= 90 ? 'red' : pct >= 70 ? 'yellow' : 'green')
+
+const status = (pct: number) => {
+  if (pct >= 90) return '🔴'
+  if (pct >= 70) return '🟡'
+  return '🟢'
+}
 
 // resetsAt ISO -> "2h 15m" / "3d 4h" / "<1m"
 const untilReset = (nowMs: number, resetsAt?: string) => {
@@ -69,19 +82,20 @@ export const register: Register = on => {
     const now = await $.clock.now()
 
     return (
-      <Box>
+      <Box flexDirection="column">
+        <Text bold color="cyan">💰 Token Budget</Text>
+        <Text dimColor>Límites semanales de tokens</Text>
+        <Text></Text>
         {rows.map(r => {
           const pct = Math.round(r.percentUsed)
           const reset = untilReset(now, r.resetsAt)
           return (
             <Text key={r.kind}>
-              <Text dimColor>{label(r.kind)} </Text>
-              <Text color={color(r.percentUsed)}>{bar(r.percentUsed)}</Text>
-              <Text color={color(r.percentUsed)} bold>
-                {' '}
-                {pct}%
-              </Text>
-              <Text dimColor>{reset ? ` (reset ${reset})` : ''}   </Text>
+              <Text>{emoji(r.kind)} {status(pct)}</Text>
+              <Text dimColor> {label(r.kind)}</Text>
+              <Text color={color(r.percentUsed)}> {bar(r.percentUsed)}</Text>
+              <Text color={color(r.percentUsed)} bold> {pct}%</Text>
+              {reset && <Text dimColor> ⏱️ {reset}</Text>}
             </Text>
           )
         })}

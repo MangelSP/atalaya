@@ -64,24 +64,27 @@ export const register: Register = on => {
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const { Box, Text } = $.ui.resolve(e)
     const list = await read($, calls)
-    const room = Math.max(1, (e.viewport?.rows ?? 24) - 3)
+    const room = Math.max(1, (e.viewport?.rows ?? 24) - 5)
     const running = list.filter(c => !c.isDone).length
 
     return (
       <Box flexDirection="column">
+        <Text bold color="green">👥 Agent Panel</Text>
+        <Text dimColor>Tools y subagentes en vivo</Text>
+        <Text></Text>
         <Text bold>
-          {running > 0 ? `${running} corriendo` : 'en reposo'}
-          <Text dimColor> · {list.length} en total</Text>
+          {running > 0 ? `🔴 ${running} corriendo` : '🟢 en reposo'}
+          <Text dimColor> ({list.length} total)</Text>
         </Text>
-        {list.length === 0 && <Text dimColor>Aun sin actividad.</Text>}
+        {list.length === 0 && <Text dimColor>Sin actividad.</Text>}
         {list.slice(-room).map(c => (
           <Text key={c.id} dimColor={c.isDone && !c.isError}>
             <Text color={c.isError ? 'red' : c.isDone ? undefined : 'yellow'}>
-              {c.isError ? '✗' : c.isDone ? '·' : '▸'}
+              {c.isError ? '✗' : c.isDone ? '✓' : '▶'}
             </Text>{' '}
-            {c.agent ? <Text color="cyan">[{c.agent}] </Text> : ''}
-            <Text bold={!c.isDone}>{c.tool}</Text>
-            {c.detail ? <Text dimColor> {c.detail}</Text> : ''}
+            {c.agent && <Text color="cyan">[{c.agent}]</Text>}
+            <Text bold={!c.isDone}> {c.tool}</Text>
+            {c.detail && <Text dimColor> {c.detail}</Text>}
           </Text>
         ))}
       </Box>
